@@ -6,16 +6,18 @@ namespace NomaiVR
     public class VRActionInput
     {
         public bool HideHand = false;
-        public readonly string Hand;
-        public readonly string Source;
+        // todo make readonly
+        public string Hand = null;
+        public string Source = null;
         public readonly string Color;
         public readonly List<string> Prefixes = new List<string>();
 
+        private ISteamVR_Action_In _action;
+
         public VRActionInput(ISteamVR_Action_In action, string color, bool isLongPress = false)
         {
-            Hand = action.GetLocalizedOriginPart(SteamVR_Input_Sources.Any, new[] { EVRInputStringBits.VRInputString_Hand });
-            Source = action.GetLocalizedOriginPart(SteamVR_Input_Sources.Any, new[] { EVRInputStringBits.VRInputString_InputSource });
             Color = color;
+            _action = action;
 
             if (isLongPress)
             {
@@ -27,6 +29,7 @@ namespace NomaiVR
 
         public string GetText()
         {
+            InitTextParts();
             var prefix = Prefixes.Count > 0 ? $"{TextHelper.TextWithColor(string.Join(" ", Prefixes.ToArray()), TextHelper.ORANGE)} " : "";
             var hand = HideHand ? "" : $"{Hand} ";
             var result = $"{prefix}{TextHelper.TextWithColor($"{hand}{Source}", Color)}";
@@ -42,6 +45,69 @@ namespace NomaiVR
             if (Hand != other.Hand && Source == other.Source)
             {
                 return true;
+            }
+            return false;
+        }
+
+        private void InitTextParts()
+        {
+            Hand = _action.GetLocalizedOriginPart(SteamVR_Input_Sources.Any, new[] { EVRInputStringBits.VRInputString_Hand });
+            Source = _action.GetLocalizedOriginPart(SteamVR_Input_Sources.Any, new[] { EVRInputStringBits.VRInputString_InputSource });
+            UpdatePrefixes();
+        }
+
+        private void UpdatePrefixes()
+        {
+            if (!ControllerInput.buttonActions.ContainsValue(this))
+            {
+                return;
+            }
+            if (HasAxisWithSameName())
+            {
+                Prefixes.Add("Click");
+            }
+
+            if (!HasOppositeHandButtonWithSameName())
+            {
+                HideHand = true;
+            }
+        }
+
+        private bool HasAxisWithSameName()
+        {
+            foreach (var axisEntry in ControllerInput.axisActions)
+            {
+                var axis = axisEntry.Value;
+                if (Hand == axis.Hand && Source == axis.Source)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool HasOppositeHandButtonWithSameName()
+        {
+            foreach (var buttonEntry in ControllerInput.buttonActions)
+            {
+                if (IsOppositeHandWithSameName(buttonEntry.Value))
+                {
+                    return true;
+                }
+            }
+            foreach (var axisEntry in ControllerInput.axisActions)
+            {
+                if (IsOppositeHandWithSameName(axisEntry.Value))
+                {
+                    return true;
+                }
+            }
+            foreach (var otherAction in ControllerInput.otherActions)
+            {
+                if (IsOppositeHandWithSameName(otherAction))
+                {
+                    return true;
+                }
             }
             return false;
         }

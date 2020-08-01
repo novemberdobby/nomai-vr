@@ -39,7 +39,7 @@ namespace NomaiVR
 
                 SetUpSteamVRActionHandlers();
                 ReplaceInputs();
-                Invoke(nameof(SetUpActionInputs), 1);
+                SetUpActionInputs();
                 GlobalMessenger.AddListener("WakeUp", OnWakeUp);
             }
 
@@ -59,45 +59,6 @@ namespace NomaiVR
                 {
                     SimulateInput(JoystickButton.Start);
                 }
-            }
-
-            private bool HasAxisWithSameName(VRActionInput button)
-            {
-                foreach (var axisEntry in axisActions)
-                {
-                    var axis = axisEntry.Value;
-                    if (button.Hand == axis.Hand && button.Source == axis.Source)
-                    {
-                        return true;
-                    }
-                }
-                return false;
-            }
-
-            private bool HasOppositeHandButtonWithSameName(VRActionInput actionInput)
-            {
-                foreach (var buttonEntry in buttonActions)
-                {
-                    if (actionInput.IsOppositeHandWithSameName(buttonEntry.Value))
-                    {
-                        return true;
-                    }
-                }
-                foreach (var axisEntry in axisActions)
-                {
-                    if (actionInput.IsOppositeHandWithSameName(axisEntry.Value))
-                    {
-                        return true;
-                    }
-                }
-                foreach (var otherAction in otherActions)
-                {
-                    if (actionInput.IsOppositeHandWithSameName(otherAction))
-                    {
-                        return true;
-                    }
-                }
-                return false;
             }
 
             public void SetUpActionInputs()
@@ -133,20 +94,6 @@ namespace NomaiVR
                 {
                     new VRActionInput(actionSet.Grip)
                 };
-
-                foreach (var buttonEntry in buttonActions)
-                {
-                    var button = buttonEntry.Value;
-                    if (HasAxisWithSameName(button))
-                    {
-                        button.Prefixes.Add("Click");
-                    }
-
-                    if (!HasOppositeHandButtonWithSameName(button))
-                    {
-                        button.HideHand = true;
-                    }
-                }
             }
 
             private void SetUpSteamVRActionHandlers()
