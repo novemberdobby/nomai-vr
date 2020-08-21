@@ -1,5 +1,4 @@
-﻿using OWML.ModHelper.Events;
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace NomaiVR
@@ -32,18 +31,13 @@ namespace NomaiVR
 
         private void Equip()
         {
-            ToolHelper.Swapper.EquipToolMode(mode);
-
-            if (mode == ToolMode.Translator)
-            {
-                GameObject.FindObjectOfType<NomaiTranslatorProp>().SetValue("_currentTextID", 1);
-            }
+            VRToolSwapper.Equip(mode);
         }
 
         private void Unequip()
         {
             onUnequip?.Invoke();
-            ToolHelper.Swapper.UnequipTool();
+            VRToolSwapper.Unequip();
         }
 
         private void SetVisible(bool visible)
@@ -85,7 +79,7 @@ namespace NomaiVR
             var isCharacterMode = OWInput.IsInputMode(InputMode.Character);
             var hand = HandsController.Behaviour.RightHand;
 
-            var isHandClose = !NomaiVR.Config.autoHideToolbelt || (hand.position - transform.position).sqrMagnitude < _minHandDistance;
+            var isHandClose = !ModSettings.AutoHideToolbelt || (hand.position - transform.position).sqrMagnitude < _minHandDistance;
             var shouldBeVisible = !ToolHelper.IsUsingAnyTool() && isCharacterMode && isHandClose;
 
             if (!_visible && shouldBeVisible)
@@ -102,14 +96,11 @@ namespace NomaiVR
         {
             UpdateGrab();
             UpdateVisibility();
-            if (_visible)
-            {
-                var player = Locator.GetPlayerTransform();
-                position.y = NomaiVR.Config.toolbeltHeight;
-                transform.position = Locator.GetPlayerCamera().transform.position + player.TransformVector(position);
-                transform.rotation = player.rotation;
-                transform.Rotate(angle);
-            }
+            var player = Locator.GetPlayerTransform();
+            position.y = ModSettings.ToolbeltHeight;
+            transform.position = Locator.GetPlayerCamera().transform.position + player.TransformVector(position);
+            transform.rotation = player.rotation;
+            transform.Rotate(angle);
         }
     }
 }

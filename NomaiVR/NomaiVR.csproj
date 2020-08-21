@@ -37,29 +37,36 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>$(GameDir)\OuterWilds_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="NAudio-Unity, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OWML.0.3.55\lib\net35\NAudio-Unity.dll</HintPath>
+      <HintPath>..\packages\OWML.0.7.3\lib\net35\NAudio-Unity.dll</HintPath>
     </Reference>
     <Reference Include="OWML, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OWML.0.3.55\lib\net35\OWML.dll</HintPath>
+      <HintPath>..\packages\OWML.0.7.3\lib\net35\OWML.dll</HintPath>
     </Reference>
     <Reference Include="OWML.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OWML.0.3.55\lib\net35\OWML.Common.dll</HintPath>
+      <HintPath>..\packages\OWML.0.7.3\lib\net35\OWML.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="OWML.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OWML.0.7.3\lib\net35\OWML.Logging.dll</HintPath>
     </Reference>
     <Reference Include="OWML.ModHelper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OWML.0.3.55\lib\net35\OWML.ModHelper.dll</HintPath>
+      <HintPath>..\packages\OWML.0.7.3\lib\net35\OWML.ModHelper.dll</HintPath>
     </Reference>
     <Reference Include="OWML.ModHelper.Assets, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OWML.0.3.55\lib\net35\OWML.ModHelper.Assets.dll</HintPath>
+      <HintPath>..\packages\OWML.0.7.3\lib\net35\OWML.ModHelper.Assets.dll</HintPath>
     </Reference>
     <Reference Include="OWML.ModHelper.Events, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OWML.0.3.55\lib\net35\OWML.ModHelper.Events.dll</HintPath>
+      <HintPath>..\packages\OWML.0.7.3\lib\net35\OWML.ModHelper.Events.dll</HintPath>
+    </Reference>
+    <Reference Include="OWML.ModHelper.Input, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OWML.0.7.3\lib\net35\OWML.ModHelper.Input.dll</HintPath>
     </Reference>
     <Reference Include="OWML.ModHelper.Interaction, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OWML.0.3.55\lib\net35\OWML.ModHelper.Interaction.dll</HintPath>
+      <HintPath>..\packages\OWML.0.7.3\lib\net35\OWML.ModHelper.Interaction.dll</HintPath>
     </Reference>
     <Reference Include="OWML.ModHelper.Menus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OWML.0.3.55\lib\net35\OWML.ModHelper.Menus.dll</HintPath>
+      <HintPath>..\packages\OWML.0.7.3\lib\net35\OWML.ModHelper.Menus.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -109,6 +116,7 @@
     <Compile Include="EffectFixes\ProjectionStoneCameraFix.cs" />
     <Compile Include="EffectFixes\CameraMaskFix.cs" />
     <Compile Include="EffectFixes\WaterFix.cs" />
+    <Compile Include="FatalErrorChecker.cs" />
     <Compile Include="Helpers\CameraHelper.cs" />
     <Compile Include="Helpers\InputHelper.cs" />
     <Compile Include="Helpers\LayerHelper.cs" />
@@ -119,8 +127,10 @@
     <Compile Include="Helpers\TimerHelper.cs" />
     <Compile Include="Helpers\ToolHelper.cs" />
     <Compile Include="Input\VRActionInput.cs" />
-    <Compile Include="ModConfig\ModConfig.cs" />
+    <Compile Include="Logs.cs" />
+    <Compile Include="ModConfig\ModSettings.cs" />
     <Compile Include="ReusableBehaviours\DebugFollowTarget.cs" />
+    <Compile Include="ReusableBehaviours\ShipMonitorInteraction.cs" />
     <Compile Include="Saves\ModSaveFile.cs" />
     <Compile Include="Hands\Hand.cs" />
     <Compile Include="NomaiVRModule.cs" />
@@ -130,6 +140,7 @@
     <Compile Include="ReusableBehaviours\Holdable.cs" />
     <Compile Include="ReusableBehaviours\PersistObject.cs" />
     <Compile Include="ReusableBehaviours\SmoothFollowCameraRotation.cs" />
+    <Compile Include="Tools\VRToolSwapper.cs" />
     <Compile Include="UI\ControllerModels.cs" />
     <Compile Include="UI\Dialogue.cs" />
     <Compile Include="Player\FeetMarker.cs" />
@@ -137,7 +148,6 @@
     <Compile Include="ForceSettings.cs" />
     <Compile Include="UI\GesturePrompts.cs" />
     <Compile Include="UI\InputPrompts.cs" />
-    <Compile Include="ReusableBehaviours\ButtonInteraction.cs" />
     <Compile Include="Tools\FlashlightGesture.cs" />
     <Compile Include="Tools\HoldItem.cs" />
     <Compile Include="UI\HelmetHUD.cs" />
@@ -148,7 +158,6 @@
     <Compile Include="Tools\HoldTranslator.cs" />
     <Compile Include="Hands\LaserPointer.cs" />
     <Compile Include="Tools\ShipTools.cs" />
-    <Compile Include="Tools\ToolModeInteraction.cs" />
     <Compile Include="ReusableBehaviours\ProximityDetector.cs" />
     <Compile Include="UI\LookArrow.cs" />
     <Compile Include="UI\Menus.cs" />
@@ -208,9 +217,8 @@
             copy /y "$(ProjectDir)\Assets\AssetFiles\*" "$(OwmlDir)\Mods\$(ModDir)\assets"
 
             copy /y "$(ProjectDir)\ModConfig\default-config.json" "$(OwmlDir)\Mods\$(ModDir)"
-            copy /y "$(ProjectDir)\Saves\save.json" "$(OwmlDir)\Mods\$(ModDir)"
             copy /y "$(ProjectDir)\manifest.json" "$(OwmlDir)\Mods\$(ModDir)"
-        </PostBuildEvent>
+</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>

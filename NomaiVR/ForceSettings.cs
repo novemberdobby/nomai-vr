@@ -16,6 +16,7 @@ namespace NomaiVR
                 SetResolution();
                 SetRefreshRate();
                 SetFov();
+                ResetInputsToDefault();
             }
 
             private static void SetResolution()
@@ -35,11 +36,16 @@ namespace NomaiVR
                 GraphicSettings.s_fovMax = GraphicSettings.s_fovMin = Camera.main.fieldOfView;
             }
 
+            private static void ResetInputsToDefault()
+            {
+                FindObjectOfType<KeyRebinderManager>().Invoke("OnApplyDefaultsSubmit");
+            }
+
             private static void UpdateActiveController()
             {
                 if (OWInput.GetActivePadNumber() != 0)
                 {
-                    NomaiVR.Log("Wrong gamepad selected. Resetting to 0");
+                    Logs.WriteWarning("Wrong gamepad selected. Resetting to 0");
                     OWInput.SetActiveGamePad(0);
                 }
             }
@@ -47,7 +53,7 @@ namespace NomaiVR
             private static void SetRefreshRate()
             {
                 var deviceRefreshRate = SteamVR.instance.hmd_DisplayFrequency;
-                var overrideRefreshRate = NomaiVR.Config.overrideRefreshRate;
+                var overrideRefreshRate = ModSettings.OverrideRefreshRate;
                 var refreshRate = overrideRefreshRate > 0 ? overrideRefreshRate : deviceRefreshRate;
                 var fixedTimeStep = 1f / refreshRate;
                 var owTime = typeof(OWTime);
